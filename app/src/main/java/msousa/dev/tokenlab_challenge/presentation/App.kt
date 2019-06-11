@@ -17,6 +17,10 @@ class App : Application() {
         single { get<DatabaseProvider>().partialMovieDataDao() }
     }
 
+    val viewModel = module {
+        single { MoviesViewModel(get()) }
+    }
+
     val usecase = module {
         single { GetMovieUseCase(get(), get()) }
         single { GetListMoviesUseCase(get(), get()) }
@@ -28,6 +32,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        startKoin(this@App, listOf(repository, usecase, database))
+        startKoin(this@App, listOf(viewModel, repository, usecase, database))
     }
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">tokenlab-challenge</string>
+    <string name="text_error_occurred_on_the_server">Ocorreu um erro no servidor.</string>
+    <string name="text_movies_not_found">Nenhum filme foi encontrado.</string>
 </resources>

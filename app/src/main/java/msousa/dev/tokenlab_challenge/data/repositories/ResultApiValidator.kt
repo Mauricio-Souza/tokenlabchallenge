@@ -1,6 +1,6 @@
 package msousa.dev.tokenlab_challenge.data.repositories
 
-import msousa.dev.tokenlab_challenge.data.internal.InternalErrorException
+import msousa.dev.tokenlab_challenge.data.internal.ServerErrorException
 import msousa.dev.tokenlab_challenge.data.internal.MovieNotFoundException
 import retrofit2.Response
 
@@ -9,7 +9,7 @@ object ResultApiValidator {
         return when(response.code()) {
             200 -> response.body()!!
             404 -> throw MovieNotFoundException()
-            else -> throw InternalErrorException()
+            else -> throw ServerErrorException()
         }
     }
 }
