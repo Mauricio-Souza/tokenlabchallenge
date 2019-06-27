@@ -10,6 +10,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_list_movies.view.*
 import msousa.dev.tokenlab_challenge.R
 import msousa.dev.tokenlab_challenge.data.model.PartialMovieDataProps
+import msousa.dev.tokenlab_challenge.formattedDate
 
 class CatologMoviesAdapter(
     private val itemClick: (Long) -> Unit
@@ -42,17 +43,9 @@ class CatologMoviesAdapter(
             with(movie) {
                 Picasso.get().load(posterUrl).into(itemView.poster)
                 itemView.title.text = title
-                itemView.date.text = formattedDate(releaseDate)
+                itemView.date.text = releaseDate.formattedDate()
                 itemView.rating.text = voteAverage.toString()
                 itemView.setOnClickListener { itemClick.invoke(id) }
-            }
-        }
-
-        private fun formattedDate(date: String) : String {
-            return if (date.isEmpty()) ""
-            else {
-                val splitDate = date.split("-")
-                return "${splitDate[2]}/${splitDate[1]}/${splitDate[0]}"
             }
         }
     }

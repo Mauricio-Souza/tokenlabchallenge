@@ -5,8 +5,10 @@ import msousa.dev.tokenlab_challenge.data.data_source.local.DatabaseProvider
 import msousa.dev.tokenlab_challenge.data.repositories.MoviesRepository
 import msousa.dev.tokenlab_challenge.domain.GetListMoviesUseCase
 import msousa.dev.tokenlab_challenge.domain.GetMovieUseCase
-import org.koin.android.ext.android.get
+import msousa.dev.tokenlab_challenge.presentation.movies.details.MovieDetailsViewModel
+import msousa.dev.tokenlab_challenge.presentation.movies.list.MoviesViewModel
 import org.koin.android.ext.android.startKoin
+import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 class App : Application() {
@@ -18,7 +20,8 @@ class App : Application() {
     }
 
     val viewModel = module {
-        single { MoviesViewModel(get()) }
+        viewModel { MoviesViewModel(get()) }
+        viewModel { MovieDetailsViewModel(get()) }
     }
 
     val usecase = module {
@@ -27,7 +30,7 @@ class App : Application() {
     }
 
     val repository = module {
-        single { MoviesRepository(get(), get(), get()) }
+        single { MoviesRepository(get(), get()) }
     }
 
     override fun onCreate() {

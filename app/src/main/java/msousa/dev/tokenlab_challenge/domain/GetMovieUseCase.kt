@@ -15,9 +15,8 @@ class GetMovieUseCase(
         return if (Utils.isOffline(context)) {
             repository.getMovieByIdFromDB(parameters.toLong())!!
         } else {
-            // TODO -> Verificar se vai usar a propriedade spokenLanguages no FullMovieDataEntity
             val movie = repository.getMovieById(parameters)
-            repository.insertMovie(movie as FullMovieDataEntity)
+            repository.insertMovie(movie)
             return movie
         }
     }

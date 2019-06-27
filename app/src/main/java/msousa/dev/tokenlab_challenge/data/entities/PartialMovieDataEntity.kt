@@ -9,12 +9,15 @@ import msousa.dev.tokenlab_challenge.data.model.PartialMovieDataProps
 @Entity(tableName = "partialMovieData")
 data class PartialMovieDataEntity (
     @PrimaryKey(autoGenerate = false)
-    override val id: Long,
+    override var id: Long,
     @ColumnInfo(name = "vote_average")
-    override val voteAverage: Float,
-    override val title: String,
+    override var voteAverage: Float,
+    override var title: String,
     @ColumnInfo(name = "poster_url")
-    override val posterUrl: String,
+    override var posterUrl: String,
     @Ignore
     override val releaseDate: String
-) : PartialMovieDataProps
+) : PartialMovieDataProps {
+
+    constructor() : this(1L, 1f, "", "", "")
+}

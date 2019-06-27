@@ -2,4 +2,20 @@
     <string name="app_name">tokenlab-challenge</string>
     <string name="text_error_occurred_on_the_server">Ocorreu um erro no servidor.</string>
     <string name="text_movies_not_found">Nenhum filme foi encontrado.</string>
+    <string name="text_data_not_found">Não há dados disponíveis sobre o filme.</string>
+    <string name="text_no_connectivity">Sem conexão com internet.</string>
+    <string name="text_not_found">Não encontrado!</string>
+    <string name="text_check_connection">Verifique sua conexão e tente novamente.</string>
+    <string name="text_release_date">Data de lançamento</string>
+    <string name="text_movie_duration">Duração</string>
+    <string name="text_details">Detalhes</string>
+    <string name="text_movie_status">Status</string>
+    <string name="text_movie_genres">Gêneros</string>
+    <string name="text_movie_popularity">Popularidade</string>
+    <string name="text_movie_average">Nota</string>
+    <string name="text_movie_total_vote">Votos</string>
+
+    <string name="text_lore_ipsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s
+        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="text_fake_content">Lore ipsum dolor</string>
 </resources>

@@ -10,9 +10,9 @@ import msousa.dev.tokenlab_challenge.data.entities.PartialMovieDataEntity
 interface PartialMovieDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrUpdate(partial: PartialMovieDataEntity)
+    fun insertOrUpdate(partial: PartialMovieDataEntity)
 
     @Query("select * from partialMovieData")
-    suspend fun getAllMovies() : List<PartialMovieDataEntity>?
+    fun getAllMovies() : List<PartialMovieDataEntity>?
 
 }

@@ -10,8 +10,8 @@ import msousa.dev.tokenlab_challenge.data.entities.FullMovieDataEntity
 interface FullMovieDataDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrUpdate(full: FullMovieDataEntity)
+    fun insertOrUpdate(full: FullMovieDataEntity)
 
     @Query("select * from fullMovieData where id = :movieId")
-    suspend fun fetchMovieById(movieId: Long) : FullMovieDataEntity?
+    fun fetchMovieById(movieId: Long) : FullMovieDataEntity?
 }

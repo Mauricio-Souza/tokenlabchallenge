@@ -1,4 +1,4 @@
-package msousa.dev.tokenlab_challenge.presentation
+package msousa.dev.tokenlab_challenge.presentation.movies.list
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import msousa.dev.tokenlab_challenge.R
+import msousa.dev.tokenlab_challenge.presentation.*
+import msousa.dev.tokenlab_challenge.presentation.movies.details.MOVIE_ID
+import msousa.dev.tokenlab_challenge.presentation.movies.details.MovieDetailsActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), LifecycleOwner {
@@ -51,7 +54,7 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 
         adapter = CatologMoviesAdapter { movieId ->
             launchActivity<MovieDetailsActivity> {
-                putExtra("movie_id", movieId)
+                putExtra(MOVIE_ID, movieId)
             }
         }
 

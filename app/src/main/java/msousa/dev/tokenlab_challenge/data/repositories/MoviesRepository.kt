@@ -13,15 +13,15 @@ import msousa.dev.tokenlab_challenge.data.model.PartialMovieData
 import msousa.dev.tokenlab_challenge.data.model.PartialMovieDataProps
 
 class MoviesRepository(
-    private val api: MovieApi = RetrofitProvider.get(),
     private val fullMovieDataDao: FullMovieDataDao,
-    private val partialMovieDataDao: PartialMovieDataDao
+    private val partialMovieDataDao: PartialMovieDataDao,
+    private val api: MovieApi = RetrofitProvider.get()
 ) {
 
     suspend fun getMovies(): PartialMovieDataDto {
         val response = api.fetchMovies().await()
         val result = ResultApiValidator.handleResponse(response)
-        return PartialMovieDataDto(result.movies)
+        return PartialMovieDataDto(result)
     }
 
     suspend fun getMovieById(id: String): FullMovieDataProps {
@@ -29,29 +29,37 @@ class MoviesRepository(
         return ResultApiValidator.handleResponse(response)
     }
 
-    suspend fun insertMoviesList(list: List<PartialMovieData>) {
+    fun insertMoviesList(list: List<PartialMovieData>) {
         list.forEach { movieData ->
             partialMovieDataDao.insertOrUpdate(
                 PartialMovieDataEntity(
                     movieData.id,
                     movieData.voteAverage,
                     movieData.title,
-                    movieData.posterUrl
+                    movieData.posterUrl,
+                    movieData.releaseDate
                 )
             )
         }
     }
 
-    suspend fun insertMovie(movie: FullMovieDataEntity) {
-        fullMovieDataDao.insertOrUpdate(movie)
+    fun insertMovie(movie: FullMovieDataProps) {
+        val entity = FullMovieDataEntity(
+            movie.id, movie.adult, movie.backdropUrl,
+            movie.genres, movie.title, movie.tagline,
+            movie.overview, movie.popularity, movie.posterUrl,
+            movie.voteAverage, movie.voteCount, movie.runtime,
+            movie.releaseDate, movie.status)
+
+        fullMovieDataDao.insertOrUpdate(entity)
     }
 
-    suspend fun getMoviesFromDB(): PartialMovieDataDto {
+    fun getMoviesFromDB(): PartialMovieDataDto {
         partialMovieDataDao.getAllMovies()?.let { return PartialMovieDataDto(it) }
         return PartialMovieDataDto(emptyList())
     }
 
-    suspend fun getMovieByIdFromDB(id: Long): FullMovieDataProps? {
+    fun getMovieByIdFromDB(id: Long): FullMovieDataProps? {
         return fullMovieDataDao.fetchMovieById(id)
     }
 }

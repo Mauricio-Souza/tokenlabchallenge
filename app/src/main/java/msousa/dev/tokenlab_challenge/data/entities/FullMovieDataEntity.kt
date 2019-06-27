@@ -12,9 +12,6 @@ data class FullMovieDataEntity (
     override val backdropUrl: String,
     @TypeConverters(DataConverter::class)
     override val genres: List<String>,
-    @TypeConverters(DataConverter::class)
-    @ColumnInfo(name = "spoken_languages")
-    val spokenLanguages: List<String>,
     override val title: String,
     override val tagline: String,
     override val overview: String,
@@ -29,4 +26,8 @@ data class FullMovieDataEntity (
     @ColumnInfo(name = "release_date")
     override val releaseDate: String,
     override val status: String
-) : FullMovieDataProps
+) : FullMovieDataProps {
+
+    @Ignore
+    constructor() : this(1L, false, "", listOf(), "", "", "", 1f, "", 1.0, 1, 1, "", "")
+}

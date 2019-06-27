@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StickerMessageView">
+        <attr name="sticker_image" format="reference|integer"/>
+        <attr name="sticker_title" format="reference|string"/>
+        <attr name="sticker_message" format="reference|string"/>
+        <attr name="message_color" format="reference|integer"/>
+        <attr name="title_color" format="reference|integer"/>
+        <attr name="title_size" format="integer"/>
+        <attr name="message_size" format="integer"/>
+        <attr name="hide_layout" format="boolean"/>
+        <attr name="show_button" format="boolean"/>
+    </declare-styleable>
+</resources>

@@ -17,24 +17,26 @@ const val DATABASE_NAME = "tokenlab_challenge_db"
 @TypeConverters(DataConverter::class)
 abstract class DatabaseProvider : RoomDatabase() {
 
-    abstract fun fullMovieDataDao() : FullMovieDataDao
-    abstract fun partialMovieDataDao() : PartialMovieDataDao
+    abstract fun fullMovieDataDao(): FullMovieDataDao
+    abstract fun partialMovieDataDao(): PartialMovieDataDao
 
     companion object {
-        @Volatile private var instance: DatabaseProvider? = null
+        @Volatile
+        private var instance: DatabaseProvider? = null
         private val LOCK = Any()
 
-        operator fun invoke(context: Context) : DatabaseProvider =
-                instance ?: synchronized(LOCK) {
-                    instance ?: buildDatabase(context).also { instance = it }
-                }
+        operator fun invoke(context: Context): DatabaseProvider =
+            instance ?: synchronized(LOCK) {
+                instance ?: buildDatabase(context).also { instance = it }
+            }
 
-        private fun buildDatabase(context: Context) : DatabaseProvider {
+        private fun buildDatabase(context: Context): DatabaseProvider {
             return Room.databaseBuilder(
                 context.applicationContext,
                 DatabaseProvider::class.java,
                 DATABASE_NAME
-            ).build()
+            ).fallbackToDestructiveMigration()
+                .build()
         }
     }
 }

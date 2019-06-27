@@ -13,6 +13,7 @@
     <View android:layout_width="90dp"
           android:layout_height="115dp"
           android:id="@+id/view_img"
+          android:background="@color/colorGray"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintLeft_toLeftOf="parent"/>
 
@@ -21,6 +22,7 @@
           android:id="@+id/view_title"
           android:layout_marginLeft="10dp"
           android:layout_marginRight="10dp"
+          android:background="@color/colorGray"
           app:layout_constraintTop_toTopOf="@id/view_img"
           app:layout_constraintLeft_toRightOf="@id/view_img"
           app:layout_constraintRight_toRightOf="parent"/>
@@ -28,6 +30,7 @@
     <View android:layout_width="0dp"
           android:layout_height="20dp"
           android:id="@+id/view_date"
+          android:background="@color/colorGray"
           app:layout_constraintTop_toBottomOf="@id/view_title"
           app:layout_constraintLeft_toLeftOf="@id/view_title"
           app:layout_constraintRight_toRightOf="@id/view_title"
@@ -36,6 +39,7 @@
     <View android:layout_width="0dp"
           android:layout_height="20dp"
           android:id="@+id/view_vote"
+          android:background="@color/colorGray"
           app:layout_constraintLeft_toLeftOf="@id/view_date"
           app:layout_constraintRight_toRightOf="@id/view_date"
           app:layout_constraintBottom_toBottomOf="@id/view_img"/>
