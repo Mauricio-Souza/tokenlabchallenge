@@ -1,6 +1,6 @@
 package msousa.dev.tokenlab_challenge.data.model
 
-interface PartialMovieDataProps {
+interface IMovieDetails {
     val id: Long
     val title: String
     val voteAverage: Float

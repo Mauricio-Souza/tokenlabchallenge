@@ -1,7 +1,7 @@
 package msousa.dev.tokenlab_challenge.data.entities
 
 import androidx.room.*
-import msousa.dev.tokenlab_challenge.data.model.FullMovieDataProps
+import msousa.dev.tokenlab_challenge.data.model.IFullMovieData
 
 @Entity(tableName = "fullMovieData")
 data class FullMovieDataEntity (
@@ -26,7 +26,7 @@ data class FullMovieDataEntity (
     @ColumnInfo(name = "release_date")
     override val releaseDate: String,
     override val status: String
-) : FullMovieDataProps {
+) : IFullMovieData {
 
     @Ignore
     constructor() : this(1L, false, "", listOf(), "", "", "", 1f, "", 1.0, 1, 1, "", "")

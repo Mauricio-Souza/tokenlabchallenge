@@ -1,6 +1,6 @@
 package msousa.dev.tokenlab_challenge.data.model
 
-interface FullMovieDataProps {
+interface IMovieData {
     val id: Long
     val adult: Boolean
     val backdropUrl: String

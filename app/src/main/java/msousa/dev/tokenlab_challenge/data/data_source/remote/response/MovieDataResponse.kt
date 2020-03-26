@@ -1,9 +1,9 @@
 package msousa.dev.tokenlab_challenge.data.data_source.remote.response
 
 import com.google.gson.annotations.SerializedName
-import msousa.dev.tokenlab_challenge.data.model.FullMovieDataProps
+import msousa.dev.tokenlab_challenge.data.model.IMovieData
 
-data class FullMovieDataResponse (
+data class MovieDataResponse (
     override val adult: Boolean,
     @SerializedName("backdrop_url")
     override val backdropUrl: String,
@@ -23,4 +23,4 @@ data class FullMovieDataResponse (
     override val runtime: Int,
     @SerializedName("release_date")
     override val releaseDate: String
-) : FullMovieDataProps
+) : IMovieData

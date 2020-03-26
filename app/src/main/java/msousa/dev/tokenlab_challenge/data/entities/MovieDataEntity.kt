@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import msousa.dev.tokenlab_challenge.data.model.PartialMovieDataProps
+import msousa.dev.tokenlab_challenge.data.model.IMovieDetails
 
 @Entity(tableName = "partialMovieData")
-data class PartialMovieDataEntity (
+data class MovieDetailsEntity (
     @PrimaryKey(autoGenerate = false)
     override var id: Long,
     @ColumnInfo(name = "vote_average")
@@ -17,7 +17,7 @@ data class PartialMovieDataEntity (
     override var posterUrl: String,
     @Ignore
     override val releaseDate: String
-) : PartialMovieDataProps {
+) : IMovieDetails {
 
     constructor() : this(1L, 1f, "", "", "")
 }

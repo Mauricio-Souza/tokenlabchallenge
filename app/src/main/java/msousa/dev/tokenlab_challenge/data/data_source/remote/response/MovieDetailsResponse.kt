@@ -2,7 +2,7 @@ package msousa.dev.tokenlab_challenge.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class PartialMovieData (
+data class MovieDetails (
     @SerializedName("id")
     override val id: Long,
     @SerializedName("vote_average")
@@ -12,4 +12,4 @@ data class PartialMovieData (
     override val posterUrl: String,
     @SerializedName("release_date")
     override val releaseDate: String
-) : PartialMovieDataProps
+) : IMovieDetails
