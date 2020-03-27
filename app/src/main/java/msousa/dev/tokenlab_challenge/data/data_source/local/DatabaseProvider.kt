@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieEntityDao
+import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieDao
 import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieDetailsDao
 import msousa.dev.tokenlab_challenge.data.data_source.local.entities.DataConverter
 import msousa.dev.tokenlab_challenge.data.data_source.local.entities.MovieEntity
@@ -17,7 +17,7 @@ const val DATABASE_NAME = "tokenlab_challenge_db"
 @TypeConverters(DataConverter::class)
 abstract class DatabaseProvider : RoomDatabase() {
 
-    abstract fun movieEntityDao(): MovieEntityDao
+    abstract fun movieEntityDao(): MovieDao
     abstract fun movieDetailsDao(): MovieDetailsDao
 
     companion object {

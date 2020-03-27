@@ -24,7 +24,7 @@ android {
 dependencies {
     def lottie_version = "3.0.0-beta2"
     def coroutines_version = "1.2.1"
-    def koin_version = "1.0.2"
+    def koin_version = "2.0.0"
     def lifecycle_version = "2.2.0"
     def room_version = "2.2.5"
     def picasso_version = "2.71828"
@@ -47,6 +47,7 @@ dependencies {
     implementation "org.koin:koin-androidx-scope:$koin_version"
     implementation "org.koin:koin-core-ext:$koin_version"
     implementation "org.koin:koin-core:$koin_version"
+    testImplementation "org.koin:koin-test:$koin_version"
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"

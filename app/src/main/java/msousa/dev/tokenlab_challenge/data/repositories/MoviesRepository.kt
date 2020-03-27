@@ -1,6 +1,6 @@
 package msousa.dev.tokenlab_challenge.data.repositories
 
-import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieEntityDao
+import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieDao
 import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieDetailsDao
 import msousa.dev.tokenlab_challenge.data.data_source.remote.RetrofitProvider
 import msousa.dev.tokenlab_challenge.data.data_source.local.entities.map
@@ -15,7 +15,7 @@ import msousa.dev.tokenlab_challenge.domain.dto.MovieDetailsDto
 import msousa.dev.tokenlab_challenge.domain.dto.MoviesListDto
 
 class MoviesRepository(
-    private val movieEntityDao: MovieEntityDao,
+    private val movieDao: MovieDao,
     private val movieDetailsDao: MovieDetailsDao,
     private val api: MovieApi = RetrofitProvider.get()
 ) : IMoviesRepository {
@@ -35,11 +35,11 @@ class MoviesRepository(
     override fun insertMoviesList(moviesDetails: List<MovieDetailsDto>) =
         movieDetailsDao.insertOrUpdate(* moviesDetails.map().toTypedArray())
 
-    override fun insertMovie(movie: MovieDataDto) = movieEntityDao.insertOrUpdate(movie.toEntity())
+    override fun insertMovie(movie: MovieDataDto) = movieDao.insertOrUpdate(movie.toEntity())
 
     override fun getMoviesFromCache(): MoviesListDto {
         return movieDetailsDao.getAllMovies()?.mapDto() ?: MoviesListDto()
     }
 
-    override fun getMovieByIdFromCache(id: Long) = movieEntityDao.fetchMovieById(id)?.toDto()
+    override fun getMovieByIdFromCache(id: Long) = movieDao.fetchMovieById(id)?.toDto()
 }

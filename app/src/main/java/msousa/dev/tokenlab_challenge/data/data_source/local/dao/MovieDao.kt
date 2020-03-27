@@ -7,7 +7,7 @@ import androidx.room.Query
 import msousa.dev.tokenlab_challenge.data.data_source.local.entities.MovieEntity
 
 @Dao
-interface MovieEntityDao {
+interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdate(entity: MovieEntity)
