@@ -4,15 +4,15 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import msousa.dev.tokenlab_challenge.data.entities.PartialMovieDataEntity
+import msousa.dev.tokenlab_challenge.data.data_source.local.entities.MovieDetailsEntity
 
 @Dao
-interface PartialMovieDataDao {
+interface MovieDetailsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOrUpdate(partial: PartialMovieDataEntity)
+    fun insertOrUpdate(vararg entity: MovieDetailsEntity)
 
     @Query("select * from partialMovieData")
-    fun getAllMovies() : List<PartialMovieDataEntity>?
+    fun getAllMovies() : List<MovieDetailsEntity>?
 
 }

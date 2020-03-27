@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:padding="10dp">
 
-    <msousa.dev.tokenlab_challenge.StickerMessageView
+    <msousa.dev.tokenlab_challenge.presentation.views.StickerMessageView
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:title_size="22"

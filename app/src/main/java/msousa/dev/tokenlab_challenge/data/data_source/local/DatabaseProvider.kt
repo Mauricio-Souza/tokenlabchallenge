@@ -5,20 +5,20 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import msousa.dev.tokenlab_challenge.data.data_source.local.dao.FullMovieDataDao
-import msousa.dev.tokenlab_challenge.data.data_source.local.dao.PartialMovieDataDao
-import msousa.dev.tokenlab_challenge.data.entities.DataConverter
-import msousa.dev.tokenlab_challenge.data.entities.FullMovieDataEntity
-import msousa.dev.tokenlab_challenge.data.entities.PartialMovieDataEntity
+import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieEntityDao
+import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieDetailsDao
+import msousa.dev.tokenlab_challenge.data.data_source.local.entities.DataConverter
+import msousa.dev.tokenlab_challenge.data.data_source.local.entities.MovieEntity
+import msousa.dev.tokenlab_challenge.data.data_source.local.entities.MovieDetailsEntity
 
 const val DATABASE_NAME = "tokenlab_challenge_db"
 
-@Database(entities = [FullMovieDataEntity::class, PartialMovieDataEntity::class], version = 1)
+@Database(entities = [MovieEntity::class, MovieDetailsEntity::class], version = 1)
 @TypeConverters(DataConverter::class)
 abstract class DatabaseProvider : RoomDatabase() {
 
-    abstract fun fullMovieDataDao(): FullMovieDataDao
-    abstract fun partialMovieDataDao(): PartialMovieDataDao
+    abstract fun movieEntityDao(): MovieEntityDao
+    abstract fun movieDetailsDao(): MovieDetailsDao
 
     companion object {
         @Volatile

@@ -1,15 +1,15 @@
-package msousa.dev.tokenlab_challenge.data.model
+package msousa.dev.tokenlab_challenge.data.data_source.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieDetails (
+data class MovieDetailsResponse (
     @SerializedName("id")
-    override val id: Long,
+    val id: Long,
     @SerializedName("vote_average")
-    override val voteAverage: Float,
-    override val title: String,
+    val voteAverage: Float,
+    val title: String,
     @SerializedName("poster_url")
-    override val posterUrl: String,
+    val posterUrl: String,
     @SerializedName("release_date")
-    override val releaseDate: String
-) : IMovieDetails
+    val releaseDate: String
+)

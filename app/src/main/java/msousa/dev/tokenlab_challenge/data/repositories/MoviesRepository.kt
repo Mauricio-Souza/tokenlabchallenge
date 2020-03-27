@@ -1,65 +1,45 @@
 package msousa.dev.tokenlab_challenge.data.repositories
 
-import msousa.dev.tokenlab_challenge.data.data_source.local.dao.FullMovieDataDao
-import msousa.dev.tokenlab_challenge.data.data_source.local.dao.PartialMovieDataDao
+import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieEntityDao
+import msousa.dev.tokenlab_challenge.data.data_source.local.dao.MovieDetailsDao
 import msousa.dev.tokenlab_challenge.data.data_source.remote.RetrofitProvider
-import msousa.dev.tokenlab_challenge.data.data_source.remote.response.FullMovieDataResponse
-import msousa.dev.tokenlab_challenge.data.data_source.remote.response.MoviesListResponse
-import msousa.dev.tokenlab_challenge.data.dto.PartialMovieDataDto
-import msousa.dev.tokenlab_challenge.data.entities.FullMovieDataEntity
-import msousa.dev.tokenlab_challenge.data.entities.PartialMovieDataEntity
-import msousa.dev.tokenlab_challenge.data.model.FullMovieDataProps
-import msousa.dev.tokenlab_challenge.data.model.PartialMovieData
-import msousa.dev.tokenlab_challenge.data.model.PartialMovieDataProps
+import msousa.dev.tokenlab_challenge.data.data_source.local.entities.map
+import msousa.dev.tokenlab_challenge.data.data_source.local.entities.mapDto
+import msousa.dev.tokenlab_challenge.data.data_source.local.entities.toDto
+import msousa.dev.tokenlab_challenge.data.data_source.local.entities.toEntity
+import msousa.dev.tokenlab_challenge.data.data_source.remote.map
+import msousa.dev.tokenlab_challenge.data.data_source.remote.toDto
+import msousa.dev.tokenlab_challenge.domain.IMoviesRepository
+import msousa.dev.tokenlab_challenge.domain.dto.MovieDataDto
+import msousa.dev.tokenlab_challenge.domain.dto.MovieDetailsDto
+import msousa.dev.tokenlab_challenge.domain.dto.MoviesListDto
 
 class MoviesRepository(
-    private val fullMovieDataDao: FullMovieDataDao,
-    private val partialMovieDataDao: PartialMovieDataDao,
+    private val movieEntityDao: MovieEntityDao,
+    private val movieDetailsDao: MovieDetailsDao,
     private val api: MovieApi = RetrofitProvider.get()
-) {
+) : IMoviesRepository {
 
-    suspend fun getMovies(): PartialMovieDataDto {
+    override suspend fun getMovies(): MoviesListDto {
         val response = api.fetchMovies().await()
         val result = ResultApiValidator.handleResponse(response)
-        return PartialMovieDataDto(result)
+        return result.map()
     }
 
-    suspend fun getMovieById(id: String): FullMovieDataProps {
+    override suspend fun getMovieById(id: String): MovieDataDto {
         val response = api.fetchMovieById(id).await()
-        return ResultApiValidator.handleResponse(response)
+        val result = ResultApiValidator.handleResponse(response)
+        return result.toDto()
     }
 
-    fun insertMoviesList(list: List<PartialMovieData>) {
-        list.forEach { movieData ->
-            partialMovieDataDao.insertOrUpdate(
-                PartialMovieDataEntity(
-                    movieData.id,
-                    movieData.voteAverage,
-                    movieData.title,
-                    movieData.posterUrl,
-                    movieData.releaseDate
-                )
-            )
-        }
+    override fun insertMoviesList(moviesDetails: List<MovieDetailsDto>) =
+        movieDetailsDao.insertOrUpdate(* moviesDetails.map().toTypedArray())
+
+    override fun insertMovie(movie: MovieDataDto) = movieEntityDao.insertOrUpdate(movie.toEntity())
+
+    override fun getMoviesFromCache(): MoviesListDto {
+        return movieDetailsDao.getAllMovies()?.mapDto() ?: MoviesListDto()
     }
 
-    fun insertMovie(movie: FullMovieDataProps) {
-        val entity = FullMovieDataEntity(
-            movie.id, movie.adult, movie.backdropUrl,
-            movie.genres, movie.title, movie.tagline,
-            movie.overview, movie.popularity, movie.posterUrl,
-            movie.voteAverage, movie.voteCount, movie.runtime,
-            movie.releaseDate, movie.status)
-
-        fullMovieDataDao.insertOrUpdate(entity)
-    }
-
-    fun getMoviesFromDB(): PartialMovieDataDto {
-        partialMovieDataDao.getAllMovies()?.let { return PartialMovieDataDto(it) }
-        return PartialMovieDataDto(emptyList())
-    }
-
-    fun getMovieByIdFromDB(id: Long): FullMovieDataProps? {
-        return fullMovieDataDao.fetchMovieById(id)
-    }
+    override fun getMovieByIdFromCache(id: Long) = movieEntityDao.fetchMovieById(id)?.toDto()
 }
