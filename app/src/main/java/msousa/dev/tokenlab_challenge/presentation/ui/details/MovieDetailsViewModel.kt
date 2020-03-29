@@ -26,7 +26,6 @@ class MovieDetailsViewModel(
     private val movieDetails = MediatorLiveData<MovieDataVO>()
     private val movieDetailsNotFound = MediatorLiveData<Event<Unit>>()
     private val movieNotFoundInCache = MediatorLiveData<Event<Unit>>()
-    private val loadingSource = MediatorLiveData<Boolean>()
 
     init {
         isLoading(movieDetailsResult)
