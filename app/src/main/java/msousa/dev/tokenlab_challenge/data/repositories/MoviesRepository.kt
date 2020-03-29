@@ -7,7 +7,7 @@ import msousa.dev.tokenlab_challenge.data.data_source.local.entities.map
 import msousa.dev.tokenlab_challenge.data.data_source.local.entities.mapDto
 import msousa.dev.tokenlab_challenge.data.data_source.local.entities.toDto
 import msousa.dev.tokenlab_challenge.data.data_source.local.entities.toEntity
-import msousa.dev.tokenlab_challenge.data.data_source.remote.map
+import msousa.dev.tokenlab_challenge.data.data_source.remote.mapDto
 import msousa.dev.tokenlab_challenge.data.data_source.remote.toDto
 import msousa.dev.tokenlab_challenge.domain.IMoviesRepository
 import msousa.dev.tokenlab_challenge.domain.dto.MovieDataDto
@@ -23,7 +23,7 @@ class MoviesRepository(
     override suspend fun getMovies(): MoviesListDto {
         val response = api.fetchMovies().await()
         val result = ResultApiValidator.handleResponse(response)
-        return result.map()
+        return result.mapDto()
     }
 
     override suspend fun getMovieById(id: String): MovieDataDto {

@@ -4,9 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_movie_details.*
@@ -23,7 +20,7 @@ const val MOVIE_ID = "movieId"
 
 class MovieDetailsActivity : AppCompatActivity() {
 
-    private val movieDetailsViewModel: MovieDetailsViewModel by viewModel()
+    private val viewModel: MovieDetailsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,24 +29,24 @@ class MovieDetailsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         intent.getLongExtra(MOVIE_ID, 0L).let {
-            movieDetailsViewModel.fetchMovieDetails(it.toString())
+            viewModel.fetchMovieDetails(it.toString())
         }
 
-        movieDetailsViewModel.getMovieDetails().observe(this, Observer { data ->
+        viewModel.getMovieDetails().observe(this, Observer { data ->
             data?.let { setMovieDetails(it) }
         })
 
-        movieDetailsViewModel.movieDetailsNotFound().observe(this,
+        viewModel.movieDetailsNotFound().observe(this,
             EventObserver {
                 showSnackbar(getString(R.string.text_data_not_found))
             })
 
-        movieDetailsViewModel.isServerError().observe(this,
+        viewModel.isServerError().observe(this,
             EventObserver {
                 showSnackbar(getString(R.string.text_error_occurred_on_the_server))
             })
 
-        movieDetailsViewModel.isLoading().observe(this, Observer { isLoading ->
+        viewModel.isLoading().observe(this, Observer { isLoading ->
             if (isLoading) {
                 shimmerView.visible()
                 shimmerView.startShimmer()
@@ -63,7 +60,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             }
         })
 
-        movieDetailsViewModel.movieNotFoundInCache().observe(this,
+        viewModel.movieNotFoundInCache().observe(this,
             EventObserver {
                 stickerView.visible()
                 movieDataLayout.gone()

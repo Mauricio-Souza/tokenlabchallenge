@@ -6,7 +6,7 @@ import msousa.dev.tokenlab_challenge.domain.dto.MovieDataDto
 import msousa.dev.tokenlab_challenge.domain.dto.MovieDetailsDto
 import msousa.dev.tokenlab_challenge.domain.dto.MoviesListDto
 
-fun List<MovieDetailsResponse>.map() = MoviesListDto(
+fun List<MovieDetailsResponse>.mapDto() = MoviesListDto(
     list = map { it.toDto() }
 )
 

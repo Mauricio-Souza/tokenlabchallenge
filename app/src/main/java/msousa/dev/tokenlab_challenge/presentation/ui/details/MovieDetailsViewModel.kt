@@ -2,6 +2,9 @@ package msousa.dev.tokenlab_challenge.presentation.ui.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import msousa.dev.tokenlab_challenge.data.internal.*
 import msousa.dev.tokenlab_challenge.domain.dto.MovieDataDto
 import msousa.dev.tokenlab_challenge.domain.usecases.GetMovieUseCase
@@ -12,6 +15,8 @@ import msousa.dev.tokenlab_challenge.presentation.common.observers.ErrorObserver
 import msousa.dev.tokenlab_challenge.presentation.common.observers.SuccessObserver
 import msousa.dev.tokenlab_challenge.presentation.vo.MovieDataVO
 import msousa.dev.tokenlab_challenge.presentation.vo.toVO
+import java.lang.Exception
+import java.lang.NullPointerException
 
 class MovieDetailsViewModel(
     private val getMovieUseCase: GetMovieUseCase
@@ -21,14 +26,15 @@ class MovieDetailsViewModel(
     private val movieDetails = MediatorLiveData<MovieDataVO>()
     private val movieDetailsNotFound = MediatorLiveData<Event<Unit>>()
     private val movieNotFoundInCache = MediatorLiveData<Event<Unit>>()
+    private val loadingSource = MediatorLiveData<Boolean>()
 
     init {
         isLoading(movieDetailsResult)
         isServerError(movieDetailsResult)
         isOffline(movieDetailsResult)
 
-        movieDetails.addSource(movieDetailsResult, SuccessObserver { result ->
-                movieDetails.value = result?.toVO()
+        movieDetails.addSource(movieDetailsResult, SuccessObserver { movie ->
+                movieDetails.value = movie?.toVO()
             })
 
         movieNotFoundInCache.addSource(movieDetailsResult,
@@ -53,5 +59,4 @@ class MovieDetailsViewModel(
     fun movieDetailsNotFound() = movieDetailsNotFound as LiveData<Event<Unit>>
 
     fun movieNotFoundInCache() = movieNotFoundInCache as LiveData<Event<Unit>>
-
 }
