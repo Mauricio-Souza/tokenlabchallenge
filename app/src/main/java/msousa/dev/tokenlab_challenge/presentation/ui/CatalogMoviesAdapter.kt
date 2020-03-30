@@ -9,14 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_list_movies.view.*
 import msousa.dev.tokenlab_challenge.R
-import msousa.dev.tokenlab_challenge.presentation.extesions.formattedDate
 import msousa.dev.tokenlab_challenge.presentation.vo.MovieDetailsVO
 
-class CatologMoviesAdapter(
+class CatalogMoviesAdapter(
     private val itemClick: (Long) -> Unit
-) : ListAdapter<MovieDetailsVO, CatologMoviesAdapter.MovieViewHolder>(
-    diffCallback
-) {
+) : ListAdapter<MovieDetailsVO, CatalogMoviesAdapter.MovieViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list_movies, parent, false)
@@ -45,8 +42,8 @@ class CatologMoviesAdapter(
             with(movieResponse) {
                 Picasso.get().load(posterUrl).into(itemView.poster)
                 itemView.title.text = title
-                itemView.date.text = releaseDate.formattedDate()
-                itemView.rating.text = voteAverage.toString()
+                itemView.date.text = releaseDate
+                itemView.rating.text = voteAverage
                 itemView.setOnClickListener { itemClick.invoke(id) }
             }
         }

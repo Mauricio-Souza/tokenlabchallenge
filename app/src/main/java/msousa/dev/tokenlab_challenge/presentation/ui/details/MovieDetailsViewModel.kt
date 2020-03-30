@@ -33,29 +33,27 @@ class MovieDetailsViewModel(
         isOffline(movieDetailsResult)
 
         movieDetails.addSource(movieDetailsResult, SuccessObserver { movie ->
-                movieDetails.value = movie?.toVO()
-            })
+            movieDetails.value = movie?.toVO()
+        })
 
-        movieNotFoundInCache.addSource(movieDetailsResult,
-            ErrorObserver { err ->
-                if (err is KotlinNullPointerException) movieNotFoundInCache.value =
-                    Event(Unit)
-            })
+        movieNotFoundInCache.addSource(movieDetailsResult, ErrorObserver { err ->
+            if (err is KotlinNullPointerException) movieNotFoundInCache.value =
+                Event(Unit)
+        })
 
-        movieDetailsNotFound.addSource(movieDetailsResult,
-            ErrorObserver { err ->
-                if (err is MovieNotFoundException) movieDetailsNotFound.value =
-                    Event(Unit)
-            })
+        movieDetailsNotFound.addSource(movieDetailsResult, ErrorObserver { err ->
+            if (err is MovieNotFoundException) movieDetailsNotFound.value =
+                Event(Unit)
+        })
     }
 
     fun fetchMovieDetails(movieId: String) {
-        movieDetailsResult.addSource(getMovieUseCase.invoke(movieId)) { r -> movieDetailsResult.value = r }
+        movieDetailsResult.addSource(getMovieUseCase.invoke(movieId)) { result ->
+            movieDetailsResult.value = result
+        }
     }
 
     fun getMovieDetails() = movieDetails as LiveData<MovieDataVO?>
-
     fun movieDetailsNotFound() = movieDetailsNotFound as LiveData<Event<Unit>>
-
     fun movieNotFoundInCache() = movieNotFoundInCache as LiveData<Event<Unit>>
 }

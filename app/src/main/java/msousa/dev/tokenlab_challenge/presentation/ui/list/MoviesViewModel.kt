@@ -26,21 +26,18 @@ class MoviesViewModel(
         isServerError(moviesListResult)
         isOffline(moviesListResult)
 
-        moviesNotFound.addSource(moviesListResult,
-            ErrorObserver { err ->
-                if (err is MovieNotFoundException) moviesNotFound.value =
-                    Event(Unit)
-            })
+        moviesNotFound.addSource(moviesListResult, ErrorObserver { err ->
+            if (err is MovieNotFoundException) moviesNotFound.value = Event(Unit)
+        })
 
-        moviesList.addSource(moviesListResult,
-            SuccessObserver { movies ->
-                moviesList.value = movies.toVO()
-            })
+        moviesList.addSource(moviesListResult, SuccessObserver { movies ->
+            moviesList.value = movies.toVO()
+        })
     }
 
     fun getMoviesList() {
-        moviesListResult.addSource(getListMoviesUseCase.invoke(Unit)) { r ->
-            moviesListResult.value = r
+        moviesListResult.addSource(getListMoviesUseCase.invoke(Unit)) { result ->
+            moviesListResult.value = result
         }
     }
 

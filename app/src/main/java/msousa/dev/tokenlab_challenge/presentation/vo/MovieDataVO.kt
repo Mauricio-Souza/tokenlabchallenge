@@ -4,15 +4,15 @@ data class MovieDataVO (
     val id: Long,
     val adult: Boolean,
     val backdropUrl: String,
-    val genres: List<String>,
+    val genres: String,
     val title: String,
     val tagline: String,
     val overview: String,
-    val popularity: Float,
+    val popularity: String,
     val posterUrl: String,
     val voteAverage: Double,
     val voteCount: Int,
-    val runtime: Int,
+    val runtime: String,
     val releaseDate: String,
     val status: String
 )

@@ -73,11 +73,10 @@ class MovieDetailsActivity : AppCompatActivity() {
             Picasso.get().load(it.posterUrl).into(moviePoster)
             movieName.text = it.title
             movieOverwiew.text = it.overview
-            releaseDate.text = it.releaseDate.formattedDate()
-            if (it.genres.size > 1) movieGenres.text = "${it.genres[0]}, ${it.genres[1]}"
-            else movieGenres.text = it.genres[0]
-            movieDuration.text = "${it.runtime} min."
-            moviePopularity.text = it.popularity.toString()
+            releaseDate.text = it.releaseDate
+            movieGenres.text = it.genres
+            movieDuration.text = it.runtime
+            moviePopularity.text = it.popularity
         }
     }
 

@@ -2,9 +2,6 @@ package msousa.dev.tokenlab_challenge.presentation.ui.list
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,7 +11,7 @@ import msousa.dev.tokenlab_challenge.presentation.extesions.gone
 import msousa.dev.tokenlab_challenge.presentation.extesions.launchActivity
 import msousa.dev.tokenlab_challenge.presentation.extesions.showSnackbar
 import msousa.dev.tokenlab_challenge.presentation.extesions.visible
-import msousa.dev.tokenlab_challenge.presentation.ui.CatologMoviesAdapter
+import msousa.dev.tokenlab_challenge.presentation.ui.CatalogMoviesAdapter
 import msousa.dev.tokenlab_challenge.presentation.ui.details.MOVIE_ID
 import msousa.dev.tokenlab_challenge.presentation.ui.details.MovieDetailsActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private val moviesViewModel: MoviesViewModel by viewModel()
 
-    private lateinit var moviesAdapter: CatologMoviesAdapter
+    private lateinit var moviesAdapter: CatalogMoviesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         moviesAdapter =
-            CatologMoviesAdapter { movieId ->
+            CatalogMoviesAdapter { movieId ->
                 launchActivity<MovieDetailsActivity> {
                     putExtra(MOVIE_ID, movieId)
                 }

@@ -36,13 +36,6 @@ abstract class UseCase<in P, R> : CoroutineScope {
         return liveCallback
     }
 
-    fun onDestroy() {
-        job.cancelChildren()
-    }
-
     @Throws(RuntimeException::class)
     protected abstract suspend fun execute(parameters: P): R
 }
-
-suspend operator fun <R> UseCase<Unit, R>.invoke(): LiveData<Result<R>> = this(Unit)
-suspend operator fun <R> UseCase<Unit, R>.invoke(result: MutableLiveData<Result<R>>) = this(Unit, result)
