@@ -1,16 +1,14 @@
 package msousa.dev.tokenlab_challenge.presentation.ui
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_list_movies.view.*
 import msousa.dev.tokenlab_challenge.R
-import msousa.dev.tokenlab_challenge.presentation.extesions.inflate
-import msousa.dev.tokenlab_challenge.presentation.extesions.loadFromUrl
+import msousa.dev.tokenlab_challenge.presentation.extensions.inflate
+import msousa.dev.tokenlab_challenge.presentation.extensions.loadFromUrl
 import msousa.dev.tokenlab_challenge.presentation.vo.MovieDetailsVO
 
 class CatalogMoviesAdapter(

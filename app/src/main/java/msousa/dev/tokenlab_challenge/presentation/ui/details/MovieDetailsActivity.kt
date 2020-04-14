@@ -2,17 +2,15 @@ package msousa.dev.tokenlab_challenge.presentation.ui.details
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_movie_details.*
 import msousa.dev.tokenlab_challenge.R
 import msousa.dev.tokenlab_challenge.presentation.common.observers.EventObserver
-import msousa.dev.tokenlab_challenge.presentation.extesions.formattedDate
-import msousa.dev.tokenlab_challenge.presentation.extesions.gone
-import msousa.dev.tokenlab_challenge.presentation.extesions.showSnackbar
-import msousa.dev.tokenlab_challenge.presentation.extesions.visible
+import msousa.dev.tokenlab_challenge.presentation.extensions.gone
+import msousa.dev.tokenlab_challenge.presentation.extensions.showSnackbar
+import msousa.dev.tokenlab_challenge.presentation.extensions.visible
 import msousa.dev.tokenlab_challenge.presentation.vo.MovieDataVO
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

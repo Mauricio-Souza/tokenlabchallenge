@@ -7,18 +7,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import msousa.dev.tokenlab_challenge.R
 import msousa.dev.tokenlab_challenge.presentation.common.observers.EventObserver
-import msousa.dev.tokenlab_challenge.presentation.extesions.gone
-import msousa.dev.tokenlab_challenge.presentation.extesions.launchActivity
-import msousa.dev.tokenlab_challenge.presentation.extesions.showSnackbar
-import msousa.dev.tokenlab_challenge.presentation.extesions.visible
+import msousa.dev.tokenlab_challenge.presentation.extensions.*
 import msousa.dev.tokenlab_challenge.presentation.ui.CatalogMoviesAdapter
 import msousa.dev.tokenlab_challenge.presentation.ui.details.MOVIE_ID
 import msousa.dev.tokenlab_challenge.presentation.ui.details.MovieDetailsActivity
+import msousa.dev.tokenlab_challenge.presentation.vo.toVO
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val moviesViewModel: MoviesViewModel by viewModel()
+    private val viewModel: MoviesViewModel by viewModel()
 
     private lateinit var moviesAdapter: CatalogMoviesAdapter
 
@@ -26,23 +24,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        moviesViewModel.getMoviesList()
+        viewModel.fetchMoviesList()
 
-        moviesViewModel.moviesList().observe(this, Observer { movies ->
+        viewModel.movies().observe(this, Observer { movies ->
             moviesAdapter.submitList(movies.list)
         })
 
-        moviesViewModel.moviesNotFound().observe(this,
-            EventObserver {
+        viewModel.moviesNotFound().observe(this, EventObserver {
                 showSnackbar(getString(R.string.text_movies_not_found))
             })
 
-        moviesViewModel.isServerError().observe(this,
-            EventObserver {
+        viewModel.isServerError().observe(this, EventObserver {
                 showSnackbar(getString(R.string.text_error_occurred_on_the_server))
             })
 
-        moviesViewModel.isLoading().observe(this, Observer { loading ->
+        viewModel.isLoading().observe(this, Observer { loading ->
             if (loading != null && loading) {
                 shimmerView.visible()
                 shimmerView.startShimmer()

@@ -1,4 +1,4 @@
-package msousa.dev.tokenlab_challenge.presentation.extesions
+package msousa.dev.tokenlab_challenge.presentation.extensions
 
 import android.content.Context
 import android.content.Context.CONNECTIVITY_SERVICE

@@ -10,6 +10,9 @@ import msousa.dev.tokenlab_challenge.presentation.common.Event
 import msousa.dev.tokenlab_challenge.presentation.ui.BaseViewModel
 import msousa.dev.tokenlab_challenge.presentation.common.observers.ErrorObserver
 import msousa.dev.tokenlab_challenge.presentation.common.observers.SuccessObserver
+import msousa.dev.tokenlab_challenge.presentation.extensions.failure
+import msousa.dev.tokenlab_challenge.presentation.extensions.loading
+import msousa.dev.tokenlab_challenge.presentation.extensions.success
 import msousa.dev.tokenlab_challenge.presentation.vo.MoviesVO
 import msousa.dev.tokenlab_challenge.presentation.vo.toVO
 
@@ -17,30 +20,37 @@ class MoviesViewModel(
     private val getListMoviesUseCase: GetListMoviesUseCase
 ) : BaseViewModel() {
 
-    private val moviesListResult = MediatorLiveData<Result<MoviesListDto>>()
-    private val moviesList = MediatorLiveData<MoviesVO>()
-    private val moviesNotFound = MediatorLiveData<Event<Unit>>()
+    val result = MediatorLiveData<Result<MoviesListDto>>()
+    private val lvMovies = MediatorLiveData<MoviesVO>()
+    private val lvMoviesNotFound = MediatorLiveData<Event<Unit>>()
 
     init {
-        isLoading(moviesListResult)
-        isServerError(moviesListResult)
-        isOffline(moviesListResult)
+        isServerError(result)
+        isOffline(result)
 
-        moviesNotFound.addSource(moviesListResult, ErrorObserver { err ->
-            if (err is MovieNotFoundException) moviesNotFound.value = Event(Unit)
-        })
+        lvMoviesNotFound.failure(result) { err ->
+            if (err is MovieNotFoundException) lvMoviesNotFound.value = Event(Unit)
+        }
 
-        moviesList.addSource(moviesListResult, SuccessObserver { movies ->
-            moviesList.value = movies.toVO()
-        })
+        isLoading.loading(result) { loading -> isLoading.value = loading }
+
+        lvMovies.success(result) { movies -> lvMovies.value = movies?.toVO() }
+
+//        lvMoviesNotFound.addSource(result, ErrorObserver { err ->
+//            if (err is MovieNotFoundException) lvMoviesNotFound.value = Event(Unit)
+//        })
+//
+//        lvMovies.addSource(result, SuccessObserver { movies ->
+//            lvMovies.value = movies.toVO()
+//        })
     }
 
-    fun getMoviesList() {
-        moviesListResult.addSource(getListMoviesUseCase.invoke(Unit)) { result ->
-            moviesListResult.value = result
+    fun fetchMoviesList() {
+        result.addSource(getListMoviesUseCase.invoke(Unit)) { result ->
+            this.result.value = result
         }
     }
 
-    fun moviesNotFound() = moviesNotFound as LiveData<Event<Unit>>
-    fun moviesList() = moviesList as LiveData<MoviesVO>
+    fun moviesNotFound() = lvMoviesNotFound as LiveData<Event<Unit>>
+    fun movies() = lvMovies as LiveData<MoviesVO>
 }

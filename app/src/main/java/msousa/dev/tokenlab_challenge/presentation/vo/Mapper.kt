@@ -3,7 +3,7 @@ package msousa.dev.tokenlab_challenge.presentation.vo
 import msousa.dev.tokenlab_challenge.domain.dto.MovieDataDto
 import msousa.dev.tokenlab_challenge.domain.dto.MovieDetailsDto
 import msousa.dev.tokenlab_challenge.domain.dto.MoviesListDto
-import msousa.dev.tokenlab_challenge.presentation.extesions.formattedDate
+import msousa.dev.tokenlab_challenge.presentation.extensions.formattedDate
 
 fun MovieDataDto.toVO() = MovieDataVO(
     id = id,

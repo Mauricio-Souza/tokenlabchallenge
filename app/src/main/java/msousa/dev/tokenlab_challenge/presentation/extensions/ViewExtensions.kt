@@ -1,4 +1,4 @@
-package msousa.dev.tokenlab_challenge.presentation.extesions
+package msousa.dev.tokenlab_challenge.presentation.extensions
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_list_movies.view.*
 
 fun View.visible() {
     this.visibility = View.VISIBLE
