@@ -1,9 +1,9 @@
 package msousa.dev.tokenlab_challenge.domain.usecases
 
 import android.content.Context
-import msousa.dev.tokenlab_challenge.data.data_source.remote.response.MovieDetailsResponse
+import android.net.ConnectivityManager
 import msousa.dev.tokenlab_challenge.data.repositories.MoviesRepository
-import msousa.dev.tokenlab_challenge.domain.Utils
+import msousa.dev.tokenlab_challenge.utils.Utils
 import msousa.dev.tokenlab_challenge.domain.dto.MoviesListDto
 
 class GetListMoviesUseCase(
@@ -11,7 +11,6 @@ class GetListMoviesUseCase(
     private val repository: MoviesRepository
 ) : UseCase<Unit, MoviesListDto>() {
 
-    @Suppress("UNCHECKED_CAST")
     override suspend fun execute(parameters: Unit): MoviesListDto {
         return if (Utils.isOffline(context)) {
             repository.getMoviesFromCache()

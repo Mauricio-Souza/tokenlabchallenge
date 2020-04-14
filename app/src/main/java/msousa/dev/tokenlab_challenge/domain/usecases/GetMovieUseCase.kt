@@ -2,7 +2,7 @@ package msousa.dev.tokenlab_challenge.domain.usecases
 
 import android.content.Context
 import msousa.dev.tokenlab_challenge.domain.IMoviesRepository
-import msousa.dev.tokenlab_challenge.domain.Utils
+import msousa.dev.tokenlab_challenge.utils.Utils
 import msousa.dev.tokenlab_challenge.domain.dto.MovieDataDto
 
 class GetMovieUseCase(
@@ -12,11 +12,11 @@ class GetMovieUseCase(
 
     override suspend fun execute(parameters: String): MovieDataDto? {
         return if (Utils.isOffline(context)) {
-            repository.getMovieByIdFromCache(parameters.toLong())
+            repository.getMovieByIdFromCache(id = parameters.toLong())
         } else {
-            val movie = repository.getMovieById(parameters)
+            val movie = repository.getMovieById(id = parameters)
             repository.insertMovie(movie)
-            return movie
+            movie
         }
     }
 }

@@ -80,8 +80,8 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == android.R.id.home) finish()
-        return super.onOptionsItemSelected(item)
+    override fun onNavigateUp(): Boolean {
+        finish()
+        return super.onNavigateUp()
     }
 }

@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_list_movies.view.*
 import msousa.dev.tokenlab_challenge.R
+import msousa.dev.tokenlab_challenge.presentation.extesions.inflate
+import msousa.dev.tokenlab_challenge.presentation.extesions.loadFromUrl
 import msousa.dev.tokenlab_challenge.presentation.vo.MovieDetailsVO
 
 class CatalogMoviesAdapter(
@@ -16,8 +18,7 @@ class CatalogMoviesAdapter(
 ) : ListAdapter<MovieDetailsVO, CatalogMoviesAdapter.MovieViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list_movies, parent, false)
-        return MovieViewHolder(view)
+        return MovieViewHolder(parent.inflate(R.layout.item_list_movies))
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
@@ -40,7 +41,7 @@ class CatalogMoviesAdapter(
 
         fun bindTo(movieResponse: MovieDetailsVO) {
             with(movieResponse) {
-                Picasso.get().load(posterUrl).into(itemView.poster)
+                itemView.poster.loadFromUrl(posterUrl)
                 itemView.title.text = title
                 itemView.date.text = releaseDate
                 itemView.rating.text = voteAverage

@@ -2,6 +2,7 @@ package msousa.dev.tokenlab_challenge.domain.di
 
 import msousa.dev.tokenlab_challenge.domain.usecases.GetListMoviesUseCase
 import msousa.dev.tokenlab_challenge.domain.usecases.GetMovieUseCase
+import msousa.dev.tokenlab_challenge.presentation.extesions.getConnectivityManager
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
