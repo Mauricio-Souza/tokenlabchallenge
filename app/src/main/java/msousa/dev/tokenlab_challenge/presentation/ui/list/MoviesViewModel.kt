@@ -1,15 +1,15 @@
 package msousa.dev.tokenlab_challenge.presentation.ui.list
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import msousa.dev.tokenlab_challenge.R
 import msousa.dev.tokenlab_challenge.data.internal.*
 import msousa.dev.tokenlab_challenge.domain.usecases.GetListMoviesUseCase
 import msousa.dev.tokenlab_challenge.domain.result.Result
 import msousa.dev.tokenlab_challenge.domain.dto.MoviesListDto
 import msousa.dev.tokenlab_challenge.presentation.common.Event
 import msousa.dev.tokenlab_challenge.presentation.ui.BaseViewModel
-import msousa.dev.tokenlab_challenge.presentation.common.observers.ErrorObserver
-import msousa.dev.tokenlab_challenge.presentation.common.observers.SuccessObserver
 import msousa.dev.tokenlab_challenge.presentation.extensions.failure
 import msousa.dev.tokenlab_challenge.presentation.extensions.loading
 import msousa.dev.tokenlab_challenge.presentation.extensions.success
@@ -20,37 +20,37 @@ class MoviesViewModel(
     private val getListMoviesUseCase: GetListMoviesUseCase
 ) : BaseViewModel() {
 
-    val result = MediatorLiveData<Result<MoviesListDto>>()
-    private val lvMovies = MediatorLiveData<MoviesVO>()
-    private val lvMoviesNotFound = MediatorLiveData<Event<Unit>>()
+    private val lvResult = MediatorLiveData<Result<MoviesListDto>>()
+    val lvMovies = MediatorLiveData<MoviesVO?>()
+    val lvMoviesNotFound = MediatorLiveData<Event<Int>>()
 
     init {
-        isServerError(result)
-        isOffline(result)
+        isServerError(lvResult)
+        isOffline(lvResult)
 
-        lvMoviesNotFound.failure(result) { err ->
-            if (err is MovieNotFoundException) lvMoviesNotFound.value = Event(Unit)
+        lvMoviesNotFound.failure(lvResult) { err ->
+            if (err is MovieNotFoundException) lvMoviesNotFound.value = Event(R.string.text_movies_not_found)
         }
 
-        isLoading.loading(result) { loading -> isLoading.value = loading }
+        isLoading.loading(lvResult) { loading -> isLoading.value = loading }
 
-        lvMovies.success(result) { movies -> lvMovies.value = movies?.toVO() }
+        lvMovies.success(lvResult) { movies -> lvMovies.value = movies?.toVO() }
+    }
 
-//        lvMoviesNotFound.addSource(result, ErrorObserver { err ->
-//            if (err is MovieNotFoundException) lvMoviesNotFound.value = Event(Unit)
-//        })
-//
-//        lvMovies.addSource(result, SuccessObserver { movies ->
-//            lvMovies.value = movies.toVO()
-//        })
+    fun exm() {
+        viewModelScope.launch {
+            isLoading.value = true
+            try {
+
+            } catch (e: Exception) {
+
+            }
+        }
     }
 
     fun fetchMoviesList() {
-        result.addSource(getListMoviesUseCase.invoke(Unit)) { result ->
-            this.result.value = result
+        lvResult.addSource(getListMoviesUseCase.invoke(Unit)) { result ->
+            lvResult.value = result
         }
     }
-
-    fun moviesNotFound() = lvMoviesNotFound as LiveData<Event<Unit>>
-    fun movies() = lvMovies as LiveData<MoviesVO>
 }

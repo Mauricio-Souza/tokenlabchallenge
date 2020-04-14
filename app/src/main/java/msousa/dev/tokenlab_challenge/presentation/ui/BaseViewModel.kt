@@ -1,40 +1,35 @@
 package msousa.dev.tokenlab_challenge.presentation.ui
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import msousa.dev.tokenlab_challenge.presentation.common.observers.ErrorObserver
+import msousa.dev.tokenlab_challenge.R
 import msousa.dev.tokenlab_challenge.presentation.common.Event
 import msousa.dev.tokenlab_challenge.domain.result.Result
 import msousa.dev.tokenlab_challenge.data.internal.ServerErrorException
+import msousa.dev.tokenlab_challenge.presentation.extensions.failure
+import msousa.dev.tokenlab_challenge.presentation.extensions.loading
 import java.net.UnknownHostException
 
 abstract class BaseViewModel : ViewModel() {
 
-    val isOffline = MediatorLiveData<Boolean>()
+    val isOffline = MediatorLiveData<Event<Unit>>()
     val isLoading = MediatorLiveData<Boolean>()
-    val isServerError = MediatorLiveData<Event<Unit>>()
+    val isServerError = MediatorLiveData<Event<Int>>()
 
-    fun <T> isOffline(liveData: LiveData<T>) {
-        isOffline.addSource(Transformations.map(liveData) { value ->
-            return@map value is Result.Error && value.exception is UnknownHostException
-        }) { offline -> isOffline.value = offline }
+    fun <T> isOffline(source: MediatorLiveData<Result<T>>) {
+        isOffline.failure(source) { err ->
+            if (err is UnknownHostException) isOffline.value = Event(Unit)
+        }
     }
 
-    fun <T> isLoading(liveData: LiveData<T>) {
-        isLoading.addSource(liveData) { r -> isLoading.value = r is Result.Loading }
+    fun <T> isLoading(source: MediatorLiveData<Result<T>>) {
+        isLoading.loading(source) { loading -> isLoading.value = loading }
     }
 
-    fun <T> isServerError(liveData: LiveData<Result<T>>) {
-        isServerError.addSource(liveData,
-            ErrorObserver { err ->
-                if (err is ServerErrorException) isServerError.value =
-                    Event(Unit)
-            })
+    fun <T> isServerError(source: MediatorLiveData<Result<T>>) {
+        isServerError.failure(source) { err ->
+            if (err is ServerErrorException)
+                isServerError.value = Event(R.string.text_error_occurred_on_the_server)
+        }
     }
-
-    fun isOffline() = isOffline as LiveData<Boolean>
-    fun isLoading() = isLoading as LiveData<Boolean>
-    fun isServerError() = isServerError as LiveData<Event<Unit>>
 }

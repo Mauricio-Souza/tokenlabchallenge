@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.activity_movie_details.*
 import msousa.dev.tokenlab_challenge.R
 import msousa.dev.tokenlab_challenge.presentation.common.observers.EventObserver
 import msousa.dev.tokenlab_challenge.presentation.extensions.gone
+import msousa.dev.tokenlab_challenge.presentation.extensions.loadFromUrl
 import msousa.dev.tokenlab_challenge.presentation.extensions.showSnackbar
 import msousa.dev.tokenlab_challenge.presentation.extensions.visible
 import msousa.dev.tokenlab_challenge.presentation.vo.MovieDataVO
@@ -19,6 +20,7 @@ const val MOVIE_ID = "movieId"
 class MovieDetailsActivity : AppCompatActivity() {
 
     private val viewModel: MovieDetailsViewModel by viewModel()
+    private val movieId by lazy { intent.getLongExtra(MOVIE_ID, 0L) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,56 +28,58 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        intent.getLongExtra(MOVIE_ID, 0L).let {
-            viewModel.fetchMovieDetails(it.toString())
+        viewModel.run {
+            fetchMovieDetails(movieId)
+
+            movieDetails.observe(this@MovieDetailsActivity, moviesDetailsObserver)
+
+            movieDetailsNotFound.observe(this@MovieDetailsActivity, movieDetailsNotFoundObserver)
+
+            isServerError.observe(this@MovieDetailsActivity, serverErrorObserver)
+
+            isLoading.observe(this@MovieDetailsActivity, loadingObserver)
+
+            movieNotFoundInCache.observe(this@MovieDetailsActivity, movieNotFoundObserver)
         }
-
-        viewModel.getMovieDetails().observe(this, Observer { data ->
-            data?.let { setMovieDetails(it) }
-        })
-
-        viewModel.movieDetailsNotFound().observe(this,
-            EventObserver {
-                showSnackbar(getString(R.string.text_data_not_found))
-            })
-
-        viewModel.isServerError().observe(this,
-            EventObserver {
-                showSnackbar(getString(R.string.text_error_occurred_on_the_server))
-            })
-
-        viewModel.isLoading().observe(this, Observer { isLoading ->
-            if (isLoading) {
-                shimmerView.visible()
-                shimmerView.startShimmer()
-                movieDataLayout.gone()
-                stickerView.gone()
-            } else {
-                shimmerView.gone()
-                shimmerView.stopShimmer()
-                movieDataLayout.visible()
-                stickerView.gone()
-            }
-        })
-
-        viewModel.movieNotFoundInCache().observe(this,
-            EventObserver {
-                stickerView.visible()
-                movieDataLayout.gone()
-            })
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setMovieDetails(movieData: MovieDataVO) {
-        movieData.let {
-            Picasso.get().load(it.posterUrl).into(moviePoster)
-            movieName.text = it.title
-            movieOverwiew.text = it.overview
-            releaseDate.text = it.releaseDate
-            movieGenres.text = it.genres
-            movieDuration.text = it.runtime
-            moviePopularity.text = it.popularity
+    private val moviesDetailsObserver = Observer<MovieDataVO?> { movieData ->
+        movieData?.let {
+            moviePoster?.loadFromUrl(it.posterUrl)
+            movieName?.text = it.title
+            movieOverwiew?.text = it.overview
+            releaseDate?.text = it.releaseDate
+            movieGenres?.text = it.genres
+            movieDuration?.text = it.runtime
+            moviePopularity?.text = it.popularity
         }
+    }
+
+    private val loadingObserver = Observer<Boolean> { isLoading ->
+        if (isLoading) {
+            shimmerView.visible()
+            shimmerView.startShimmer()
+            movieDataLayout.gone()
+            stickerView.gone()
+        } else {
+            shimmerView.gone()
+            shimmerView.stopShimmer()
+            movieDataLayout.visible()
+            stickerView.gone()
+        }
+    }
+
+    private val movieNotFoundObserver = EventObserver<Unit> {
+        stickerView.visible()
+        movieDataLayout.gone()
+    }
+
+    private val movieDetailsNotFoundObserver = EventObserver<Int> { message ->
+        showSnackbar(getString(message))
+    }
+
+    private val serverErrorObserver = EventObserver<Int> { message ->
+        showSnackbar(getString(message))
     }
 
     override fun onNavigateUp(): Boolean {

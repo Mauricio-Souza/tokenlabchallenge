@@ -11,6 +11,7 @@ import msousa.dev.tokenlab_challenge.presentation.extensions.*
 import msousa.dev.tokenlab_challenge.presentation.ui.CatalogMoviesAdapter
 import msousa.dev.tokenlab_challenge.presentation.ui.details.MOVIE_ID
 import msousa.dev.tokenlab_challenge.presentation.ui.details.MovieDetailsActivity
+import msousa.dev.tokenlab_challenge.presentation.vo.MoviesVO
 import msousa.dev.tokenlab_challenge.presentation.vo.toVO
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,38 +25,49 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel.fetchMoviesList()
+        viewModel.run {
+            fetchMoviesList()
 
-        viewModel.movies().observe(this, Observer { movies ->
-            moviesAdapter.submitList(movies.list)
-        })
+            lvMovies.observe(this@MainActivity, moviesObserver)
 
-        viewModel.moviesNotFound().observe(this, EventObserver {
-                showSnackbar(getString(R.string.text_movies_not_found))
-            })
+            lvMoviesNotFound.observe(this@MainActivity, moviesNotFoundObserver)
 
-        viewModel.isServerError().observe(this, EventObserver {
-                showSnackbar(getString(R.string.text_error_occurred_on_the_server))
-            })
+            isServerError.observe(this@MainActivity, serverErrorObserver)
 
-        viewModel.isLoading().observe(this, Observer { loading ->
-            if (loading != null && loading) {
-                shimmerView.visible()
-                shimmerView.startShimmer()
-            } else {
-                shimmerView.stopShimmer()
-                shimmerView.gone()
-            }
-        })
+            isLoading.observe(this@MainActivity, loadingObserver)
+        }
 
-        moviesAdapter =
-            CatalogMoviesAdapter { movieId ->
+        moviesAdapter = CatalogMoviesAdapter { movieId ->
                 launchActivity<MovieDetailsActivity> {
                     putExtra(MOVIE_ID, movieId)
                 }
             }
 
         setupRecyclerView()
+    }
+
+    private val moviesObserver = Observer<MoviesVO?> { movies ->
+        movies?.let { moviesAdapter.submitList(it.list) }
+    }
+
+    private val moviesNotFoundObserver = EventObserver<Int> { message ->
+        showSnackbar(getString(message))
+    }
+
+    private val serverErrorObserver = EventObserver<Int> { message ->
+        showSnackbar(getString(message))
+    }
+
+    private val loadingObserver = Observer<Boolean> { isLoading ->
+        shimmerView?.apply {
+            if (isLoading) {
+                visible()
+                startShimmer()
+            } else {
+                stopShimmer()
+                gone()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
